@@ -40,26 +40,20 @@ export default {
   methods: {
     async initializeMap() {
       const mapContainer = this.$refs.googleMap;
-      console.log(mapContainer);
-      this.google.load()
-        .then(() => {
-          // eslint-disable-next-line
-          this.map = new google.maps.Map(mapContainer, this.mapConfig);
+      await this.google.load();
+      // eslint-disable-next-line
+      this.map = new google.maps.Map(mapContainer, this.mapConfig);
 
-          this.bins.forEach((bin) => {
-            // eslint-disable-next-line
-            new google.maps.Marker({
-              map: this.map,
-              position: {
-                lat: parseFloat(bin.acf.Latitude),
-                lng: parseFloat(bin.acf.Longitude),
-              },
-            });
-          });
-        })
-        .catch((e) => {
-          console.error(e);
+      this.bins.forEach((bin) => {
+        // eslint-disable-next-line
+        new google.maps.Marker({
+          map: this.map,
+          position: {
+            lat: parseFloat(bin.acf.Latitude),
+            lng: parseFloat(bin.acf.Longitude),
+          },
         });
+      });
     },
   },
 };
