@@ -1,6 +1,7 @@
 <template>
   <div>
     <div
+      v-if="bins"
       class="google-map"
       ref="googleMap"
     />
@@ -25,6 +26,14 @@ export default {
       },
     };
   },
+  computed: {
+    bins() {
+      return this.$store.state.bins;
+    },
+  },
+  created() {
+    this.$store.dispatch('loadPins');
+  },
   mounted() {
     const googleMapApi = new Loader({
       apiKey: this.apiKey,
@@ -38,7 +47,18 @@ export default {
       this.google.load()
         .then(() => {
           // eslint-disable-next-line
-          new google.maps.Map(mapContainer, this.mapConfig);
+          this.map = new google.maps.Map(mapContainer, this.mapConfig);
+
+          this.bins.forEach((bin) => {
+            // eslint-disable-next-line
+            new google.maps.Marker({
+              map: this.map,
+              position: {
+                lat: parseFloat(bin.acf.Latitude),
+                lng: parseFloat(bin.acf.Longitude),
+              },
+            });
+          });
         })
         .catch((e) => {
           console.error(e);
