@@ -4,6 +4,16 @@
       class="google-map"
       ref="googleMap"
     />
+    <button
+      class="button button--add-bin"
+      @click="showAddBin()"
+      v-html="'Pridaj kôš'"
+    />
+    <button
+      class="button button--confirm-bin"
+      @click="confirmAddBin()"
+      v-html="'Potvrď'"
+    />
   </div>
 </template>
 
@@ -14,6 +24,7 @@ export default {
   data() {
     return {
       apiKey: 'AIzaSyCkJ4h5KOLslCzwS1wKB-ME7JNBCbtk8K8',
+      draggableMarker: null,
       google: null,
       map: null,
       mapConfig: {
@@ -38,6 +49,9 @@ export default {
     this.initializeMap();
   },
   methods: {
+    confirmAddBin() {
+      console.log(this.draggableMarker.getPosition().toJSON());
+    },
     async initializeMap() {
       const mapContainer = this.$refs.googleMap;
       await this.google.load();
@@ -55,6 +69,19 @@ export default {
         });
       });
     },
+    showAddBin() {
+      // eslint-disable-next-line
+      this.draggableMarker = new google.maps.Marker({
+        position: {
+          lat: 48.10111111,
+          lng: 17.09111111,
+        },
+        map: this.map,
+        draggable: true,
+        title: 'Drag me!',
+      });
+      console.log(this.draggableMarker);
+    },
   },
 };
 </script>
@@ -62,5 +89,19 @@ export default {
 <style lang="scss">
 .google-map {
   height: 100vh;
+}
+
+.button {
+  position: absolute;
+
+  &--add-bin {
+    bottom: 50px;
+    left: 50px;
+  }
+
+  &--confirm-bin {
+    bottom: 20px;
+    left: 50px;
+  }
 }
 </style>
