@@ -1,5 +1,7 @@
 <template>
-  <Map />
+  <Map
+    v-if="bins"
+  />
 </template>
 
 <script>
@@ -9,6 +11,14 @@ export default {
   name: 'App',
   components: {
     Map,
+  },
+  computed: {
+    bins() {
+      return this.$store.state.bins;
+    },
+  },
+  created() {
+    this.$store.dispatch('loadPins');
   },
 };
 </script>

@@ -1,7 +1,6 @@
 <template>
   <div>
     <div
-      v-if="bins"
       class="google-map"
       ref="googleMap"
     />
@@ -31,9 +30,6 @@ export default {
       return this.$store.state.bins;
     },
   },
-  created() {
-    this.$store.dispatch('loadPins');
-  },
   mounted() {
     const googleMapApi = new Loader({
       apiKey: this.apiKey,
@@ -44,6 +40,7 @@ export default {
   methods: {
     async initializeMap() {
       const mapContainer = this.$refs.googleMap;
+      console.log(mapContainer);
       this.google.load()
         .then(() => {
           // eslint-disable-next-line
