@@ -90,18 +90,4 @@ export default {
 .google-map {
   height: 100vh;
 }
-
-.button {
-  position: absolute;
-
-  &--add-bin {
-    bottom: 50px;
-    left: 50px;
-  }
-
-  &--confirm-bin {
-    bottom: 20px;
-    left: 50px;
-  }
-}
 </style>
