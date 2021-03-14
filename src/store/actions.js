@@ -1,18 +1,24 @@
 export default {
-  async addTrash(_, { code }) {
+  async addTrash({ commit }, { code, materials }) {
     try {
       const wpObject = {
         slug: code,
-        status: 'published',
+        status: 'publish',
         title: code,
+        materials,
       };
 
       const response = await fetch('https://recyklovanie.vladovic.sk/wp-json/wp/v2/trash/', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Basic ZWRpdG9yODUxOnh0b1VGb2xsaUJEYl5jckowb2toT0Fxeg==',
+        },
         body: JSON.stringify(wpObject),
       });
       const data = await response.json();
       console.log(data);
+      commit('ADD_TRASH_DETAILS', data);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -34,7 +40,7 @@ export default {
       const response = await fetch(`https://recyklovanie.vladovic.sk/wp-json/wp/v2/trash?slug=${payload}`);
       const data = await response.json();
       console.log(data);
-      commit('ADD_TRASH_DETAILS', data);
+      commit('ADD_TRASH_DETAILS', data[0]);
     } catch (error) {
       console.error('Error:', error);
     }

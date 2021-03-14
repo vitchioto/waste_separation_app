@@ -1,6 +1,11 @@
 <template>
   <div class="scanner">
     <div
+      class="close"
+      @click="close()"
+      v-html="'x'"
+    />
+    <div
       v-if="!trashDetailsLoaded"
     >
       <div
@@ -19,9 +24,19 @@
       v-else
     >
       <div
-        v-if="trashDetails && trashDetails.length"
+        v-if="trashDetails"
       >
-        yep
+       <div
+          v-if="trashAdded"
+        >
+          Tadaa, nový odpad pridaný!
+        </div>
+        Vyhodiť do:
+        <div
+          v-for="(bin, index) in trashDetails.bins"
+          :key="index"
+          v-html="bin"
+        />
       </div>
       <div
         v-else
@@ -38,7 +53,7 @@
               type="checkbox"
               name="material[]"
               v-model="newTrashMaterials"
-              :value="material.slug"
+              :value="material.title.rendered"
             >
             {{ material.title.rendered }}
           </label>
@@ -103,6 +118,9 @@ export default {
       await this.$store.dispatch('addTrash', { code: this.code, materials: this.newTrashMaterials });
       this.trashAdded = true;
     },
+    close() {
+      this.$emit('closeScanner');
+    },
     async getTrashDetails() {
       Quagga.stop();
       await this.$store.dispatch('getTrashDetails', this.code);
@@ -120,14 +138,22 @@ export default {
   background: #fff;
   left: calc(50% - 150px);
   position: absolute;
+  text-align: center;
   top: 50px;
   width: 300px;
 }
 
+.close {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 1;
+}
+
 #scanner {
   video {
-    height: 200px;
-    width: 200px;
+    width: 300px;
   }
 }
 

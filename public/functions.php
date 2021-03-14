@@ -37,7 +37,35 @@ function acf_to_rest_api($response, $post, $request) {
     return $response;
 }
 add_filter('rest_prepare_bin', 'acf_to_rest_api', 10, 3);
-add_filter('rest_prepare_trash', 'acf_to_rest_api', 10, 3);
+
+function acf_to_rest_api_trash($response, $post, $request) {
+    if (!function_exists('get_fields')) return $response;
+	
+	$rulesArgs = array(
+	  'name'        => 'bratislava',
+      'post_type' => 'city_rules',
+      'post_status'    => 'publish',
+    );
+	
+	$rulesObject = get_posts($rulesArgs);
+	$rules = get_fields($rulesObject[0]->ID);
+	$bins = [];
+	
+    if (isset($post)) {
+        $acf = get_fields($post->id);
+        $response->data['acf'] = $acf;
+		
+		foreach($acf['Materials'] as $material) {
+			foreach($rules as $key => $binRules) {
+    			if(in_array($material, $binRules) AND !in_array($key, $bins)) $bins[] = $key;
+			}
+		}
+		$response->data['bins'] = $bins;
+    }
+    return $response;
+}
+
+add_filter('rest_prepare_trash', 'acf_to_rest_api_trash', 10, 3);
 
 add_filter('acf/load_field/name=Type', 'acf_load_bin_types');
 
@@ -131,8 +159,9 @@ function my_acf_add_local_field_groups() {
 add_action('acf/init', 'my_acf_add_local_field_groups');
 
 function wp_api_encode_acf($data,$post,$context){
+	print_r($post);
     $customMeta = (array) get_fields($post['materials']);
-
+	print_r($customMeta);
     $data['meta'] = array_merge($data['meta'], $customMeta );
     return $data;
 }
@@ -140,3 +169,12 @@ function wp_api_encode_acf($data,$post,$context){
 if( function_exists('get_fields') ){
     add_filter('json_prepare_post', 'wp_api_encode_acf', 10, 3);
 }
+
+function vv_test($post, $request){
+	$params = $request->get_json_params();
+	$materials = $params['materials'];
+	update_field( 'Materials', $materials, $post->ID );
+	return $post;
+}
+
+add_filter('rest_after_insert_trash', 'vv_test', 10, 3);

@@ -4,6 +4,7 @@
   />
   <Scanner
     v-if="showScanner"
+    @closeScanner="setScanner(false)"
   />
   <button
     class="button button--scanner"
