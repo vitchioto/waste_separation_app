@@ -53,7 +53,7 @@
               type="checkbox"
               name="material[]"
               v-model="newTrashMaterials"
-              :value="material.title.rendered"
+              :value="material.acf.code"
             >
             {{ material.title.rendered }}
           </label>

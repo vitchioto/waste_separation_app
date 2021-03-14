@@ -37,6 +37,7 @@ function acf_to_rest_api($response, $post, $request) {
     return $response;
 }
 add_filter('rest_prepare_bin', 'acf_to_rest_api', 10, 3);
+add_filter('rest_prepare_material', 'acf_to_rest_api', 10, 3);
 
 function acf_to_rest_api_trash($response, $post, $request) {
     if (!function_exists('get_fields')) return $response;
@@ -100,7 +101,8 @@ function acf_load_trash_materials($field)
 	$result = [];
 			
 	foreach ( get_posts( $args ) as $type ) {
-      $result[$type->post_title]  = $type->post_title;
+	  $acf = get_fields($type->ID);	
+      $result[$acf['code']]  = $type->post_title;
     }
 	$field['choices'] = $result;
 
@@ -118,7 +120,8 @@ function my_acf_add_local_field_groups() {
 	$materials = [];
 	
 	foreach ( get_posts( $materialsArgs ) as $material ) {
-      $materials[$material->post_title]  = $material->post_title;
+	  $acf = get_fields($material->ID);	
+      $materials[$acf['code']]  = $material->post_title;
     }
 	
 	$binArgs = array(
