@@ -1,10 +1,54 @@
 <template>
   <div class="scanner">
-    <div id="scanner" />
-    <input
-      type="text"
-      v-model="code"
+    <div
+      v-if="!trashDetailsLoaded"
     >
+      <div
+        id="scanner"
+      />
+      <input
+        type="text"
+        v-model="code"
+      >
+      <button
+        @click="getTrashDetails()"
+        v-html="'Potvrď'"
+      />
+    </div>
+    <div
+      v-else
+    >
+      <div
+        v-if="trashDetails && trashDetails.length"
+      >
+        yep
+      </div>
+      <div
+        v-else
+      >
+        <div>
+          Whoops, tento produkt chýba, môžte ho doplniť :)
+        </div>
+        <div class="materials">
+          <label
+            v-for="(material, index) in materials"
+            :key="index"
+          >
+            <input
+              type="checkbox"
+              name="material[]"
+              v-model="newTrashMaterials"
+              :value="material.slug"
+            >
+            {{ material.title.rendered }}
+          </label>
+        </div>
+        <button
+          @click="addTrash()"
+          v-html="'Pridaj'"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -15,7 +59,18 @@ export default {
   data() {
     return {
       code: '',
+      newTrashMaterials: [],
+      trashAdded: false,
+      trashDetailsLoaded: false,
     };
+  },
+  computed: {
+    materials() {
+      return this.$store.state.materials;
+    },
+    trashDetails() {
+      return this.$store.state.trashDetails;
+    },
   },
   mounted() {
     Quagga.init({
@@ -35,11 +90,24 @@ export default {
       Quagga.start();
     });
     Quagga.onDetected(this.onDetected);
+
+    if (!this.materials) {
+      this.$store.dispatch('getMaterials');
+    }
   },
   beforeUnmount() {
     Quagga.stop();
   },
   methods: {
+    async addTrash() {
+      await this.$store.dispatch('addTrash', { code: this.code, materials: this.newTrashMaterials });
+      this.trashAdded = true;
+    },
+    async getTrashDetails() {
+      Quagga.stop();
+      await this.$store.dispatch('getTrashDetails', this.code);
+      this.trashDetailsLoaded = true;
+    },
     onDetected(result) {
       this.code = result.codeResult.code;
     },
@@ -65,5 +133,10 @@ export default {
 
 .drawingBuffer {
   display: none;
+}
+
+.materials {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 </style>
