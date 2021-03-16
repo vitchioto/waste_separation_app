@@ -43,6 +43,10 @@
           v-if="trashDetails"
           :trash-details="trashDetails"
         />
+        <AddTrash
+          v-if="trashDetailsLoaded && !trashDetails"
+          :code="code"
+        />
       </div>
       <button
         class="button button--confirm"
@@ -55,12 +59,14 @@
 </template>
 
 <script>
+import AddTrash from './components/AddTrash.vue';
 import Scanner from './components/Scanner.vue';
 import Trash from './components/Trash.vue';
 
 export default {
   name: 'App',
   components: {
+    AddTrash,
     Scanner,
     Trash,
   },
