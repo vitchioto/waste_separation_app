@@ -11,24 +11,7 @@
     <div
       v-if="false"
     >
-      <div
-        v-if="trashDetails"
-      >
-       <div
-          v-if="trashAdded"
-        >
-          Tadaa, nový odpad pridaný!
-        </div>
-        Vyhodiť do:
-        <div
-          v-for="(bin, index) in trashDetails.bins"
-          :key="index"
-          v-html="bin"
-        />
-      </div>
-      <div
-        v-else
-      >
+      <div>
         <div>
           Whoops, tento produkt chýba, môžte ho doplniť :)
         </div>
@@ -68,9 +51,6 @@ export default {
   computed: {
     materials() {
       return this.$store.state.materials;
-    },
-    trashDetails() {
-      return this.$store.state.trashDetails;
     },
   },
   mounted() {

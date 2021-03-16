@@ -12,7 +12,10 @@
         <span class="city__suffix"> ?</span>
       </div>
     </header>
-    <main>
+    <main
+      class="main"
+      :class="{ 'main--animate': trashDetailsLoaded}"
+    >
       <div class="scanner__wrapper">
         <Scanner
           v-if="showScanner"
@@ -26,15 +29,21 @@
           v-html="'Naskenuj čiarový kód'"
         />
       </div>
-      <label class="code__wrapper">
-        Čiarový kód
-        <input
-          class="code"
-          type="text"
-          placeholder="123456789"
-          v-model="code"
-        >
-      </label>
+      <div class="trash__wrapper">
+        <label class="code__wrapper">
+          Čiarový kód
+          <input
+            class="code"
+            type="text"
+            placeholder="123456789"
+            v-model="code"
+          >
+        </label>
+        <Trash
+          v-if="trashDetails"
+          :trash-details="trashDetails"
+        />
+      </div>
       <button
         class="button button--confirm"
         :disabled="!code"
@@ -47,11 +56,13 @@
 
 <script>
 import Scanner from './components/Scanner.vue';
+import Trash from './components/Trash.vue';
 
 export default {
   name: 'App',
   components: {
     Scanner,
+    Trash,
   },
   data() {
     return {
@@ -59,6 +70,11 @@ export default {
       trashDetailsLoaded: false,
       showScanner: false,
     };
+  },
+  computed: {
+    trashDetails() {
+      return this.$store.state.trashDetails;
+    },
   },
   methods: {
     async getTrashDetails() {
@@ -128,14 +144,29 @@ h1 {
   }
 }
 
-main {
+.main {
   padding-top: 30px;
+
+  &--animate {
+    .scanner__wrapper, .button--confirm {
+      opacity: 0;
+    }
+
+    .trash {
+      opacity: 1;
+
+      &__wrapper {
+        transform: translateY(-250px);
+      }
+    }
+  }
 }
 
 .scanner__wrapper {
   border: 1px solid #fff;
   height: 225px;
   margin: 0 auto 20px;
+  transition: opacity 0.5s;
   width: 300px;
 }
 
@@ -150,12 +181,15 @@ main {
 
   &__wrapper {
     display: block;
-    margin: 0 auto 20px;
-    max-width: 300px;
-    transform: translateY(0);
-    transition: transform 0.5s;
-    width: 100%;
   }
+}
+
+.trash__wrapper {
+  margin: 0 auto 20px;
+  max-width: 300px;
+  transform: translateY(0);
+  transition: transform 0.5s ease 0.5s;
+  width: 100%;
 }
 
 .button {
@@ -168,6 +202,7 @@ main {
   margin: 0 auto 20px;
   max-width: 300px;
   padding: 20px;
+  transition: opacity 0.5s;
   width: 100%;
 
   &--scanner {
