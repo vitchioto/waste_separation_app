@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <header>
-      <h1>Kam to vyhodiť</h1>
+      <h1>
+        <a href="/">
+          Kam to vyhodiť
+        </a>
+      </h1>
       <div class="city">
         <span class="city__prefix">v meste </span>
         <label class="city__dropdown__wrapper">
@@ -101,6 +105,11 @@ export default {
 @import '/node_modules/reset-css/sass/_reset.scss';
 html {
   background: #000;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
 }
 
 .container {
