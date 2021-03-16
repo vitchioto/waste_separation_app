@@ -1,22 +1,47 @@
 <template>
   <div class="container">
-  <h1>Kam to vyhodiť</h1>
-  <div class="city">
-    <span>v meste </span>
-    <select>
-      <option>Bratislava</option>
-    </select>
-    <span>?</span>
-  </div>
-  <Scanner
-    v-if="showScanner"
-    @closeScanner="setScanner(false)"
-  />
-  <button
-    class="button button--scanner"
-    @click="setScanner(true)"
-    v-html="'Skenuj'"
-  />
+    <header>
+      <h1>Kam to vyhodiť</h1>
+      <div class="city">
+        <span class="city__prefix">v meste </span>
+        <label class="city__dropdown__wrapper">
+          <select class="city__dropdown">
+            <option>Bratislava</option>
+          </select>
+        </label>
+        <span class="city__suffix"> ?</span>
+      </div>
+    </header>
+    <main>
+      <div class="scanner__wrapper">
+        <Scanner
+          v-if="showScanner"
+          @closeScanner="setScanner(false)"
+          @codeDetected="setCode"
+        />
+        <button
+          v-else
+          class="button button--scanner"
+          @click="setScanner(true)"
+          v-html="'Naskenuj čiarový kód'"
+        />
+      </div>
+      <label class="code__wrapper">
+        Čiarový kód
+        <input
+          class="code"
+          type="text"
+          placeholder="123456789"
+          v-model="code"
+        >
+      </label>
+      <button
+        class="button button--confirm"
+        :disabled="!code"
+        @click="getTrashDetails(true)"
+        v-html="'Kam to vyhodiť'"
+      />
+    </main>
   </div>
 </template>
 
@@ -30,10 +55,19 @@ export default {
   },
   data() {
     return {
+      code: '',
+      trashDetailsLoaded: false,
       showScanner: false,
     };
   },
   methods: {
+    async getTrashDetails() {
+      await this.$store.dispatch('getTrashDetails', this.code);
+      this.trashDetailsLoaded = true;
+    },
+    setCode(payload) {
+      this.code = payload;
+    },
     setScanner(payload) {
       this.showScanner = payload;
     },
@@ -43,29 +77,103 @@ export default {
 
 <style lang="scss">
 @import '/node_modules/reset-css/sass/_reset.scss';
+html {
+  background: #000;
+}
+
 .container {
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
   margin: 0 auto;
   max-width: 600px;
   padding: 30px 10px;
   width: 100%
 }
 
+h1 {
+  font-size: 3rem;
+  line-height: 4rem;
+}
+
+.city {
+  font-size: 1.5rem;
+  line-height: 1.7rem;
+  text-align: right;
+
+  &__dropdown {
+    appearance: none;
+    background: #000;
+    border: none;
+    color: #fff;
+    font-size: 3rem;
+    line-height: 4rem;
+    margin-right: 5px;
+
+    &__wrapper {
+      align-items: center;
+      border: 1px solid #fff;
+      display: inline-flex;
+      padding: 10px;
+
+      &::after {
+        border-bottom: 3px solid #fff;
+        border-left: 3px solid #fff;
+        content: "";
+        display: inline-block;
+        height: 10px;
+        transform: rotate(-45deg);
+        width: 10px;
+      }
+    }
+  }
+}
+
+main {
+  padding-top: 30px;
+}
+
+.scanner__wrapper {
+  border: 1px solid #fff;
+  height: 225px;
+  margin: 0 auto 20px;
+  width: 300px;
+}
+
+.code {
+  background: #000;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  color: #fff;
+  display: block;
+  padding: 5px;
+  width: 100%;
+
+  &__wrapper {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 300px;
+    transform: translateY(0);
+    transition: transform 0.5s;
+    width: 100%;
+  }
+}
+
 .button {
-  position: absolute;
-
-  &--add-bin {
-    bottom: 50px;
-    left: 50px;
-  }
-
-  &--confirm-bin {
-    bottom: 20px;
-    left: 50px;
-  }
+  background: #000;
+  border: 1px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-size: 1.5rem;
+  margin: 0 auto 20px;
+  max-width: 300px;
+  padding: 20px;
+  width: 100%;
 
   &--scanner {
-    bottom: 80px;
-    left: 50px;
+    border: none;
+    height: 100%;
+    margin: 0;
   }
 }
 </style>

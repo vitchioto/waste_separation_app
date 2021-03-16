@@ -5,23 +5,11 @@
       @click="close()"
       v-html="'x'"
     />
-    <div
-      v-if="!trashDetailsLoaded"
-    >
       <div
         id="scanner"
       />
-      <input
-        type="text"
-        v-model="code"
-      >
-      <button
-        @click="getTrashDetails()"
-        v-html="'Potvrď'"
-      />
-    </div>
     <div
-      v-else
+      v-if="false"
     >
       <div
         v-if="trashDetails"
@@ -73,10 +61,8 @@ import Quagga from '@ericblade/quagga2';
 export default {
   data() {
     return {
-      code: '',
       newTrashMaterials: [],
       trashAdded: false,
-      trashDetailsLoaded: false,
     };
   },
   computed: {
@@ -121,13 +107,9 @@ export default {
     close() {
       this.$emit('closeScanner');
     },
-    async getTrashDetails() {
-      Quagga.stop();
-      await this.$store.dispatch('getTrashDetails', this.code);
-      this.trashDetailsLoaded = true;
-    },
     onDetected(result) {
-      this.code = result.codeResult.code;
+      Quagga.stop();
+      this.$emit('codeDetected', result.codeResult.code);
     },
   },
 };
@@ -135,11 +117,7 @@ export default {
 
 <style lang="scss">
 .scanner {
-  background: #fff;
-  left: calc(50% - 150px);
-  position: absolute;
-  text-align: center;
-  top: 50px;
+  height: 225px;
   width: 300px;
 }
 
