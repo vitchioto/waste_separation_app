@@ -1,7 +1,13 @@
 <template>
-  <Map
-    v-if="bins"
-  />
+  <div class="container">
+  <h1>Kam to vyhodiť</h1>
+  <div class="city">
+    <span>v meste </span>
+    <select>
+      <option>Bratislava</option>
+    </select>
+    <span>?</span>
+  </div>
   <Scanner
     v-if="showScanner"
     @closeScanner="setScanner(false)"
@@ -11,30 +17,21 @@
     @click="setScanner(true)"
     v-html="'Skenuj'"
   />
+  </div>
 </template>
 
 <script>
-import Map from './components/Map.vue';
 import Scanner from './components/Scanner.vue';
 
 export default {
   name: 'App',
   components: {
-    Map,
     Scanner,
   },
   data() {
     return {
       showScanner: false,
     };
-  },
-  computed: {
-    bins() {
-      return this.$store.state.bins;
-    },
-  },
-  created() {
-    this.$store.dispatch('loadPins');
   },
   methods: {
     setScanner(payload) {
@@ -45,6 +42,14 @@ export default {
 </script>
 
 <style lang="scss">
+@import '/node_modules/reset-css/sass/_reset.scss';
+.container {
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 30px 10px;
+  width: 100%
+}
+
 .button {
   position: absolute;
 
