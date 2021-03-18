@@ -12,7 +12,7 @@ export default {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Basic ZWRpdG9yODUxOnh0b1VGb2xsaUJEYl5jckowb2toT0Fxeg==',
+          Authorization: 'Basic ZWRpdG9yODUxOjVvekwgZFRNRiA3d01PIDBkbFUgcHZ3QSA2ZGtk',
         },
         body: JSON.stringify(wpObject),
       });
