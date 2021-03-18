@@ -37,7 +37,7 @@
         <label class="code__wrapper">
           Čiarový kód
           <input
-            class="code"
+            class="text-field code"
             type="text"
             placeholder="123456789"
             v-model="code"
@@ -185,7 +185,7 @@ h1 {
   width: 300px;
 }
 
-.code {
+.text-field {
   background: #000;
   border: 1px solid #fff;
   box-sizing: border-box;
@@ -193,7 +193,9 @@ h1 {
   display: block;
   padding: 5px;
   width: 100%;
+}
 
+.code {
   &__wrapper {
     display: block;
   }

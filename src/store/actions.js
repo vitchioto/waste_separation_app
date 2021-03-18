@@ -1,7 +1,8 @@
 export default {
-  async addTrash({ commit }, { code, materials }) {
+  async addTrash({ commit }, { code, content, materials }) {
     try {
       const wpObject = {
+        content,
         slug: code,
         status: 'publish',
         title: code,

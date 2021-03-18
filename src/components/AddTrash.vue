@@ -3,6 +3,15 @@
     <div>
       Whoops, tento produkt chýba, môžete ho doplniť :)
     </div>
+    <label class="code__wrapper">
+      Názov produktu
+      <input
+        class="text-field trash__title"
+        type="text"
+        placeholder="Čokoláda Milka"
+        v-model="trashTitle"
+      >
+    </label>
     <div
       v-if="materials"
       class="materials__wrapper"
@@ -60,6 +69,7 @@ export default {
       openMaterialGroups: [],
       newTrashMaterials: [],
       trashAdded: false,
+      trashTitle: '',
     };
   },
   computed: {
@@ -89,7 +99,11 @@ export default {
   },
   methods: {
     async addTrash() {
-      await this.$store.dispatch('addTrash', { code: this.code, materials: this.newTrashMaterials });
+      await this.$store.dispatch('addTrash', {
+        code: this.code,
+        content: this.trashTitle,
+        materials: this.newTrashMaterials,
+      });
       this.trashAdded = true;
     },
     toggleOpen(group) {
