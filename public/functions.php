@@ -39,6 +39,8 @@ function acf_to_rest_api($response, $post, $request) {
 add_filter('rest_prepare_bin', 'acf_to_rest_api', 10, 3);
 add_filter('rest_prepare_material', 'acf_to_rest_api', 10, 3);
 
+remove_filter('the_content', 'wpautop');
+
 function acf_to_rest_api_trash($response, $post, $request) {
     if (!function_exists('get_fields')) return $response;
 	
