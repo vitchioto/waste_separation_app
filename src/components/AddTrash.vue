@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="add-trash__message">
       Whoops, tento produkt chýba, môžete ho doplniť :)
     </div>
     <label class="code__wrapper">
@@ -23,6 +23,7 @@
       >
         <div
           class="materials__title"
+          :class="{'materials__title--open': openMaterialGroups.includes(index)}"
           @click="toggleOpen(index)"
           v-html="index"
         />
@@ -33,6 +34,7 @@
           <label
             v-for="material in materialGroup"
             :key="material.code"
+            class="material"
           >
             <input
               type="checkbox"
@@ -40,8 +42,12 @@
               v-model="newTrashMaterials"
               :value="material.code"
             >
-            {{ material.title }}
-            <div
+            <span
+              v-html="material.title"
+            />
+            <br>
+            <span
+              class="material__examples"
               v-html="material.text"
             />
           </label>
@@ -119,6 +125,12 @@ export default {
 </script>
 
 <style lang="scss">
+.add-trash {
+  &__message {
+    padding: 20px 0;
+  }
+}
+
 .materials {
   max-height: 0;
   overflow: hidden;
@@ -126,6 +138,51 @@ export default {
 
   &--open {
     max-height: 500px;
+  }
+
+  &__wrapper {
+    padding: 20px 0;
+  }
+
+  &__group {
+    border-bottom: 1px solid #fff;
+    padding: 10px 0;
+  }
+
+  &__title {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+
+    &::after {
+      border-bottom: 1px solid #fff;
+      border-right: 1px solid #fff;
+      content: "";
+      display: block;
+      height: 5px;
+      transform: rotateZ(45deg);
+      transition: transform 0.5s;
+      width: 5px;
+    }
+
+    &--open {
+      &::after {
+        transform: rotateZ(-135deg);
+      }
+    }
+  }
+}
+
+.material {
+  cursor: pointer;
+  display: block;
+  padding-top: 5px;
+
+  &__examples {
+    display: inline-block;
+    padding: 5px 0 5px 5px;
+    font-size: 12px;
   }
 }
 </style>
