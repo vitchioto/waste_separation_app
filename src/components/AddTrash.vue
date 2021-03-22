@@ -42,6 +42,13 @@
               v-model="newTrashMaterials"
               :value="material.code"
             >
+            <img
+              class="material__image"
+              alt=""
+              height="40"
+              :src="material.image"
+              width="40"
+            >
             <span
               v-html="material.title"
             />
@@ -89,6 +96,8 @@ export default {
         if (!result[category]) result[category] = [];
         const object = {
           code,
+          // eslint-disable-next-line dot-notation
+          image: material['_embedded']['wp:featuredmedia'][0].source_url,
           text: material.content.rendered,
           title: material.title.rendered,
         };
@@ -178,6 +187,11 @@ export default {
   cursor: pointer;
   display: block;
   padding-top: 5px;
+
+  &__image {
+    background: #fff;
+    margin-right: 5px;
+  }
 
   &__examples {
     display: inline-block;
