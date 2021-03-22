@@ -43,6 +43,14 @@ remove_filter('the_content', 'wpautop');
 
 function acf_to_rest_api_trash($response, $post, $request) {
     if (!function_exists('get_fields')) return $response;
+
+    $binTypesArgs = array(
+	    'post_type' => 'bin_types',
+        'post_status'    => 'publish',
+        'posts_per_page'=> 9,
+    );
+	
+    $binTypeObject = get_posts($binTypesArgs);
 	
 	$rulesArgs = array(
 	  'name'        => 'bratislava',
@@ -53,6 +61,7 @@ function acf_to_rest_api_trash($response, $post, $request) {
 	$rulesObject = get_posts($rulesArgs);
 	$rules = get_fields($rulesObject[0]->ID);
 	$bins = [];
+	$binIDs = [];
 	
     if (isset($post)) {
         $acf = get_fields($post->id);
@@ -60,7 +69,18 @@ function acf_to_rest_api_trash($response, $post, $request) {
 		
 		foreach($acf['Materials'] as $material) {
 			foreach($rules as $key => $binRules) {
-    			if(in_array($material, $binRules) AND !in_array($key, $bins)) $bins[] = $key;
+    			if(in_array($material, $binRules) AND !in_array($key, $binIDs)) {
+    				$binIDs[] = $key;
+    				foreach($binTypeObject as $type) {
+    					if (substr($key, 4) == $type->post_name) {
+    						$acfBin = get_fields($type->ID);
+    						$bins[] = array(
+    							'color' => $acfBin['color'],
+    							'title' => $type->post_content
+    						);
+    					}
+    				}
+				}
 			}
 		}
 		$response->data['bins'] = $bins;
