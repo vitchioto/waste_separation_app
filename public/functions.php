@@ -76,7 +76,8 @@ function wsbe_acf_to_rest_api_trash($response, $post, $request) {
     						$acfBin = get_fields($type->ID);
     						$bins[] = array(
     							'color' => $acfBin['color'],
-    							'title' => $type->post_content
+                                'content' => $type->post_content,
+    							'title' => $type->post_title
     						);
     					}
     				}
