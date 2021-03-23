@@ -27,7 +27,7 @@ function wsbe_scripts() {
 
 add_action( 'wp_enqueue_scripts', 'wsbe_scripts' );
 
-function acf_to_rest_api($response, $post, $request) {
+function wsbe_acf_to_rest_api($response, $post, $request) {
     if (!function_exists('get_fields')) return $response;
 
     if (isset($post)) {
@@ -36,12 +36,12 @@ function acf_to_rest_api($response, $post, $request) {
     }
     return $response;
 }
-add_filter('rest_prepare_bin', 'acf_to_rest_api', 10, 3);
-add_filter('rest_prepare_material', 'acf_to_rest_api', 10, 3);
+add_filter('rest_prepare_bin', 'wsbe_acf_to_rest_api', 10, 3);
+add_filter('rest_prepare_material', 'wsbe_acf_to_rest_api', 10, 3);
 
 remove_filter('the_content', 'wpautop');
 
-function acf_to_rest_api_trash($response, $post, $request) {
+function wsbe_acf_to_rest_api_trash($response, $post, $request) {
     if (!function_exists('get_fields')) return $response;
 
     $binTypesArgs = array(
@@ -88,11 +88,9 @@ function acf_to_rest_api_trash($response, $post, $request) {
     return $response;
 }
 
-add_filter('rest_prepare_trash', 'acf_to_rest_api_trash', 10, 3);
+add_filter('rest_prepare_trash', 'wsbe_acf_to_rest_api_trash', 10, 3);
 
-add_filter('acf/load_field/name=Type', 'acf_load_bin_types');
-
-function acf_load_bin_types($field)
+function wsbe_acf_load_bin_types($field)
 {
     $args = array(
       'post_type' => 'bin_types',
@@ -110,9 +108,9 @@ function acf_load_bin_types($field)
     return $field;
 }
 
-add_filter('acf/load_field/name=Materials', 'acf_load_trash_materials');
+add_filter('acf/load_field/name=Type', 'wsbe_acf_load_bin_types');
 
-function acf_load_trash_materials($field)
+function wsbe_acf_load_trash_materials($field)
 {
     $args = array(
       'post_type' => 'material',
@@ -131,7 +129,9 @@ function acf_load_trash_materials($field)
     return $field;
 }
 
-function my_acf_add_local_field_groups() {
+add_filter('acf/load_field/name=Materials', 'wsbe_acf_load_trash_materials');
+
+function wsbe_add_bins_and_materials_to_city_rules() {
 	
 	$materialsArgs = array(
       'post_type' => 'material',
@@ -183,25 +183,23 @@ function my_acf_add_local_field_groups() {
 	));
 }
 
-add_action('acf/init', 'my_acf_add_local_field_groups');
+add_action('acf/init', 'wsbe_add_bins_and_materials_to_city_rules');
 
-function wp_api_encode_acf($data,$post,$context){
-	print_r($post);
+function wsbe_api_encode_acf($data,$post,$context){
     $customMeta = (array) get_fields($post['materials']);
-	print_r($customMeta);
     $data['meta'] = array_merge($data['meta'], $customMeta );
     return $data;
 }
 
 if( function_exists('get_fields') ){
-    add_filter('json_prepare_post', 'wp_api_encode_acf', 10, 3);
+    add_filter('json_prepare_post', 'wsbe_api_encode_acf', 10, 3);
 }
 
-function vv_test($post, $request){
+function wsbe_add_trash($post, $request){
 	$params = $request->get_json_params();
 	$materials = $params['materials'];
 	update_field( 'Materials', $materials, $post->ID );
 	return $post;
 }
 
-add_filter('rest_after_insert_trash', 'vv_test', 10, 3);
+add_filter('rest_after_insert_trash', 'wsbe_add_trash', 10, 3);
