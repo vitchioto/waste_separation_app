@@ -155,10 +155,12 @@ function my_acf_add_local_field_groups() {
 	$binTypes = [];
 			
 	foreach ( get_posts( $binArgs ) as $type ) {
+	  $acfBin = get_fields($type->ID);	
+
       $binTypes[]  = array (
-		'key' => 'bin_'.$type->post_title,
-		'label' => 'Bin '.$type->post_title,
-		'name' => 'bin_'.$type->post_title,
+		'key' => $acfBin['code'],
+		'label' => 'Kôš na '.$type->post_title,
+		'name' => $acfBin['code'],
 		'type' => 'checkbox',
 		'choices' => $materials,
 		'layout' => 'horizontal',
