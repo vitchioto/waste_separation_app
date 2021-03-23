@@ -27,7 +27,7 @@ export default {
   },
   async getMaterials({ commit }) {
     try {
-      const response = await fetch('https://recyklovanie.vladovic.sk/wp-json/wp/v2/material?per_page=100&_embed');
+      const response = await fetch('https://recyklovanie.vladovic.sk/wp-json/wp/v2/material?per_page=100&_embed&filter[orderby]=id&order=asc');
       const data = await response.json();
       console.log(data);
       commit('ADD_MATERIALS', data);
