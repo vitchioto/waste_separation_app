@@ -70,6 +70,7 @@ export default {
       this.stopped = true;
       Quagga.stop();
       this.$emit('codeDetected', result.codeResult.code);
+      this.$emit('getTrashDetails');
     },
     startQuagga() {
       this.stopped = false;

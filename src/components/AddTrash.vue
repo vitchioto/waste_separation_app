@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="add-trash__message">
-      Whoops, tento produkt chýba, môžete ho doplniť :)
-    </div>
     <label class="code__wrapper">
       Názov produktu
       <input

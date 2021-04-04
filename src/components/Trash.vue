@@ -56,11 +56,6 @@ export default {
 </script>
 
 <style lang="scss">
-.trash {
-  opacity: 0;
-  transition: opacity 0.5s ease 1s;
-}
-
 .bin {
   position: relative;
 

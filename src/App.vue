@@ -18,13 +18,13 @@
     </header>
     <main
       class="main"
-      :class="{ 'main--animate': trashDetailsLoaded}"
     >
       <div class="scanner__wrapper">
         <Scanner
           v-if="showScanner"
           @closeScanner="setScanner(false)"
           @codeDetected="setCode"
+          @getTrashDetails="getTrashDetails()"
         />
         <button
           v-else
@@ -43,20 +43,30 @@
             v-model="code"
           >
         </label>
-        <Trash
-          v-if="trashDetails"
-          :trash-details="trashDetails"
-        />
-        <AddTrash
-          v-if="trashDetailsLoaded && !trashDetails"
-          :code="code"
+        <button
+          class="button button--confirm"
+          :disabled="!code"
+          @click="getTrashDetails()"
+          v-html="'Odoslať'"
         />
       </div>
-      <button
-        class="button button--confirm"
-        :disabled="!code"
-        @click="getTrashDetails(true)"
-        v-html="'Kam to vyhodiť'"
+      <Trash
+        v-if="trashDetails"
+        :trash-details="trashDetails"
+      />
+      <div
+        v-if="trashDetailsLoaded && !trashDetails"
+        class="add-trash__message"
+      >
+        Whoops, tento produkt chýba, môžete ho
+        <button
+          @click="setTrashForm(true)"
+          v-html="'doplniť'"
+        />
+      </div>
+      <AddTrash
+        v-if="showTrashForm"
+        :code="code"
       />
     </main>
   </div>
@@ -79,6 +89,7 @@ export default {
       code: '',
       trashDetailsLoaded: false,
       showScanner: false,
+      showTrashForm: false,
     };
   },
   computed: {
@@ -96,6 +107,9 @@ export default {
     },
     setScanner(payload) {
       this.showScanner = payload;
+    },
+    setTrashForm(payload) {
+      this.showTrashForm = payload;
     },
   },
 };
@@ -161,20 +175,6 @@ h1 {
 
 .main {
   padding-top: 30px;
-
-  &--animate {
-    .scanner__wrapper, .button--confirm {
-      opacity: 0;
-    }
-
-    .trash {
-      opacity: 1;
-
-      &__wrapper {
-        transform: translateY(-250px);
-      }
-    }
-  }
 }
 
 .scanner__wrapper {
@@ -190,9 +190,8 @@ h1 {
   border: 1px solid #fff;
   box-sizing: border-box;
   color: #fff;
-  display: block;
   padding: 5px;
-  width: 100%;
+  width: 100px;
 }
 
 .code {
@@ -202,11 +201,13 @@ h1 {
 }
 
 .trash__wrapper {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
   margin: 0 auto 20px;
   max-width: 300px;
   transform: translateY(0);
   transition: transform 0.5s ease 0.5s;
-  width: 100%;
 }
 
 .button {
@@ -214,13 +215,19 @@ h1 {
   border: 1px solid #fff;
   color: #fff;
   cursor: pointer;
-  display: block;
   font-size: 1.5rem;
   margin: 0 auto 20px;
   max-width: 300px;
   padding: 20px;
   transition: opacity 0.5s;
   width: 100%;
+
+  &--confirm {
+    font-size: 1rem;
+    margin: 0;
+    padding: 10px;
+    width: auto;
+  }
 
   &--scanner {
     border: none;
