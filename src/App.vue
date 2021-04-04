@@ -25,6 +25,7 @@
           @closeScanner="setScanner(false)"
           @codeDetected="setCode"
           @getTrashDetails="getTrashDetails()"
+          @reset="reset()"
         />
         <button
           v-else
@@ -110,6 +111,12 @@ export default {
     },
     setTrashForm(payload) {
       this.showTrashForm = payload;
+    },
+    reset() {
+      this.setCode('');
+      this.setTrashForm(false);
+      this.trashDetailsLoaded = false;
+      this.$store.commit('ADD_TRASH_DETAILS', null);
     },
   },
 };

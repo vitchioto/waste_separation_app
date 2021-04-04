@@ -74,7 +74,7 @@ export default {
     },
     startQuagga() {
       this.stopped = false;
-      this.$emit('codeDetected', '');
+      this.$emit('reset');
       this.initQuagga();
     },
   },
