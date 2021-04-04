@@ -38,10 +38,10 @@ export default {
   },
   async getTrashDetails({ commit }, payload) {
     try {
-      const response = await fetch(`https://recyklovanie.vladovic.sk/wp-json/wp/v2/trash?slug=${payload}`);
+      const response = await fetch(`https://recyklovanie.vladovic.sk/wp-json/wp/v2/trash?search=${payload}`);
       const data = await response.json();
       console.log(data);
-      commit('ADD_TRASH_DETAILS', data[0]);
+      commit('ADD_TRASH_DETAILS', data);
     } catch (error) {
       console.error('Error:', error);
     }

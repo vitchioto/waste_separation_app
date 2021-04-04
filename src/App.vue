@@ -52,11 +52,11 @@
         />
       </div>
       <Trash
-        v-if="trashDetails"
+        v-if="trashDetails && trashDetails.length"
         :trash-details="trashDetails"
       />
       <div
-        v-if="trashDetailsLoaded && !trashDetails"
+        v-if="trashDetailsLoaded && !trashDetails.length"
         class="add-trash__message"
       >
         Whoops, tento produkt chýba, môžete ho
@@ -197,8 +197,9 @@ h1 {
   border: 1px solid #fff;
   box-sizing: border-box;
   color: #fff;
-  padding: 5px;
-  width: 100px;
+  font-size: 1rem;
+  padding: 10px 5px;
+  width: 130px;
 }
 
 .code {
