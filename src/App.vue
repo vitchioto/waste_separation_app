@@ -1,4 +1,15 @@
 <template>
+  <div
+    v-if="!cookieConsent"
+    class="cookie-message"
+  >
+    Táta stránka používa cookies
+    <button
+      class="button button--confirm"
+      @click="setCookie()"
+      v-html="'OK'"
+    />
+  </div>
   <div class="container">
     <header>
       <h1>
@@ -88,6 +99,7 @@ export default {
   data() {
     return {
       code: '',
+      cookieConsent: null,
       trashDetailsLoaded: false,
       showScanner: false,
       showTrashForm: false,
@@ -118,6 +130,13 @@ export default {
       this.trashDetailsLoaded = false;
       this.$store.commit('ADD_TRASH_DETAILS', null);
     },
+    setCookie() {
+      localStorage.setItem('cookie-consent', true);
+      this.cookieConsent = true;
+    },
+  },
+  created() {
+    this.cookieConsent = localStorage.getItem('cookie-consent') || false;
   },
 };
 </script>
@@ -131,6 +150,12 @@ html {
 a {
   color: #fff;
   text-decoration: none;
+}
+
+.cookie-message {
+  background: #888;
+  padding: 5px;
+  text-align: center;
 }
 
 .container {
