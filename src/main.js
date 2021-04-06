@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import VueGtag from 'vue-gtag-next';
 import { setupI18n } from './i18n';
+import { setupRouter } from './router';
 import App from './App.vue';
 import './registerServiceWorker';
 import store from './store';
@@ -16,6 +17,8 @@ const i18n = setupI18n({
   },
 });
 
+const router = setupRouter(i18n);
+
 const app = createApp(App);
 app.use(VueGtag, {
   property: {
@@ -24,4 +27,5 @@ app.use(VueGtag, {
 });
 app.use(i18n);
 app.use(store);
+app.use(router);
 app.mount('#app');

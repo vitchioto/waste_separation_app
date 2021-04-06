@@ -1,0 +1,14 @@
+{
+  "addCode": "add it",
+  "addProduct": "Add",
+  "cookieButton": "OK",
+  "cookieMessage": "This page uses cookies.",
+  "eanCode": "EAN code",
+  "missingProduct": "Whoops, this product is missing, you can ",
+  "placeholderOfNewProduct": "New product",
+  "scanIt": "Scan EAN code",
+  "scannerRepeat": "repeat",
+  "submitCode": "Submit",
+  "title": "Where to throw it away",
+  "titleOfNewProduct": "Title of the product"
+}
