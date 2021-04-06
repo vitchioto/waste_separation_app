@@ -1,9 +1,10 @@
 {
-  "addCode": "add it",
+  "addCode": "add it.",
   "addProduct": "Add",
   "cookieButton": "OK",
   "cookieMessage": "This page uses cookies.",
   "eanCode": "EAN code",
+  "in": "in ",
   "missingProduct": "Whoops, this product is missing, you can ",
   "placeholderOfNewProduct": "New product",
   "scanIt": "Scan EAN code",

@@ -18,7 +18,7 @@
         </a>
       </h1>
       <div class="city">
-        <span class="city__prefix">v meste </span>
+        <span class="city__prefix">{{ $t('in') }}</span>
         <label class="city__dropdown__wrapper">
           <select class="city__dropdown">
             <option>Bratislava</option>
