@@ -3,18 +3,18 @@
     v-if="!cookieConsent"
     class="cookie-message"
   >
-    Táta stránka používa cookies
+    {{ $t('cookieMessage') }}
     <button
       class="button button--confirm"
       @click="setCookie()"
-      v-html="'OK'"
+      v-html="$t('cookieButton')"
     />
   </div>
   <div class="container">
     <header>
       <h1>
         <a href="/">
-          Kam to vyhodiť
+          {{ $t('title') }}
         </a>
       </h1>
       <div class="city">
@@ -42,16 +42,16 @@
           v-else
           class="button button--scanner"
           @click="setScanner(true)"
-          v-html="'Naskenuj čiarový kód'"
+          v-html="$t('scanIt')"
         />
       </div>
       <div class="trash__wrapper">
         <label class="code__wrapper">
-          Čiarový kód
+          {{ $t('eanCode') }}
           <input
             class="text-field code"
             type="text"
-            placeholder="123456789"
+            placeholder="8580123456789"
             v-model="code"
           >
         </label>
@@ -59,7 +59,7 @@
           class="button button--confirm"
           :disabled="!code"
           @click="getTrashDetails()"
-          v-html="'Odoslať'"
+          v-html="$t('submitCode')"
         />
       </div>
       <Trash
@@ -70,10 +70,10 @@
         v-if="trashDetailsLoaded && !trashDetails.length"
         class="add-trash__message"
       >
-        Whoops, tento produkt chýba, môžete ho
+        {{ $t('missingProduct') }}
         <button
           @click="setTrashForm(true)"
-          v-html="'doplniť'"
+          v-html="$t('addCode')"
         />
       </div>
       <AddTrash

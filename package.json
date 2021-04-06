@@ -15,6 +15,7 @@
     "reset-css": "^5.0.1",
     "vue": "^3.0.0",
     "vue-gtag-next": "^1.14.0",
+    "vue-i18n": "^9.0.0",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

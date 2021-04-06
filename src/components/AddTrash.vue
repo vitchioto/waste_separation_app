@@ -1,11 +1,11 @@
 <template>
   <div>
     <label class="code__wrapper">
-      Názov produktu
+      {{ $t('titleOfNewProduct') }}
       <input
         class="text-field trash__title"
         type="text"
-        placeholder="Čokoláda Milka"
+        :placeholder="$t('placeholderOfNewProduct')"
         v-model="trashTitle"
       >
     </label>
@@ -61,7 +61,7 @@
     <button
       class="button button--add-trash"
       @click="addTrash()"
-      v-html="'Pridaj'"
+      v-html="$t('addProduct')"
     />
   </div>
 </template>
