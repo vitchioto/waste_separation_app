@@ -4,12 +4,16 @@
   "cookieButton": "OK",
   "cookieMessage": "Táta stránka používa cookies.",
   "eanCode": "Čiarový kód",
+  "edit": "upraviť",
+  "hideEdit": "skryť úpravu",
   "in": "v meste ",
   "missingProduct": "Whoops, tento produkt chýba, môžete ho ",
+  "placeholderOfNewPart": "Viečko",
   "placeholderOfNewProduct": "Názov produktu",
   "scanIt": "Naskenuj čiarový kód",
   "scannerRepeat": "zopakovať",
   "submitCode": "Odoslať",
   "title": "Kam to vyhodiť",
+  "titleOfNewPart": "Názov časti obalu",
   "titleOfNewProduct": "Názov produktu"
 }

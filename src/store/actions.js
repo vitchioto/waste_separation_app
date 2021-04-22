@@ -1,28 +1,32 @@
 export default {
-  async addTrash({ commit }, { code, content, materials }) {
+  async addTrash({ dispatch }, { code, content, parts }) {
     try {
-      const wpObject = {
-        content,
-        slug: code,
-        status: 'publish',
-        title: code,
-        materials,
-      };
+      await Promise.all(
+        parts.map(async (part) => {
+          const wpObject = {
+            content,
+            materials: part.material,
+            status: 'publish',
+            subType: part.title,
+            title: code,
+          };
 
-      const response = await fetch('https://recyklovanie.vladovic.sk/wp-json/wp/v2/trash/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Basic ZWRpdG9yODUxOjVvekwgZFRNRiA3d01PIDBkbFUgcHZ3QSA2ZGtk',
-        },
-        body: JSON.stringify(wpObject),
-      });
-      const data = await response.json();
-      console.log(data);
-      commit('ADD_TRASH_DETAILS', data);
+          const response = await fetch('https://recyklovanie.vladovic.sk/wp-json/wp/v2/trash/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Basic ZWRpdG9yODUxOjVvekwgZFRNRiA3d01PIDBkbFUgcHZ3QSA2ZGtk',
+            },
+            body: JSON.stringify(wpObject),
+          });
+          const data = await response.json();
+          console.log(data);
+        }),
+      );
     } catch (error) {
       console.error('Error:', error);
     }
+    await dispatch('getTrashDetails', code);
     return 1;
   },
   async getMaterials({ commit }) {
