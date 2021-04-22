@@ -199,7 +199,9 @@ if( function_exists('get_fields') ){
 function wsbe_add_trash($post, $request){
 	$params = $request->get_json_params();
 	$materials = $params['materials'];
+	$subType = $params['subType'];
 	update_field( 'Materials', $materials, $post->ID );
+	update_field( 'sub_type', $subType, $post->ID );
 	return $post;
 }
 
