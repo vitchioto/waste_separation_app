@@ -71,13 +71,18 @@
         class="add-trash__message"
       >
         {{ $t('missingProduct') }}
+        <span
+          v-if="showTrashForm"
+          v-html="$t('addCode')"
+        />
         <button
+          v-else
           @click="setTrashForm(true)"
           v-html="$t('addCode')"
         />
       </div>
       <AddTrash
-        v-if="showTrashForm"
+        v-if="showTrashForm && !(trashDetails && trashDetails.length)"
         :code="code"
       />
     </main>
