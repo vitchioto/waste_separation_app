@@ -277,6 +277,17 @@ h1 {
     width: auto;
   }
 
+  &--error {
+    border: none;
+    display: block;
+    font-size: 1rem;
+  }
+
+  &--send {
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+
   &--scanner {
     border: none;
     height: 100%;

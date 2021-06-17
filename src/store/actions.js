@@ -29,6 +29,31 @@ export default {
     await dispatch('getTrashDetails', code);
     return 1;
   },
+  async addTrashError(_, { code, content }) {
+    try {
+      const wpObject = {
+        content,
+        status: 'publish',
+        title: code,
+      };
+
+      const response = await fetch('https://recyklovanie.vladovic.sk/wp-json/wp/v2/trash-error/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Basic ZWRpdG9yODUxOjVvekwgZFRNRiA3d01PIDBkbFUgcHZ3QSA2ZGtk',
+        },
+        body: JSON.stringify(wpObject),
+      });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
+      return 0;
+    }
+    return 1;
+  },
   async getMaterials({ commit }) {
     try {
       const response = await fetch('https://recyklovanie.vladovic.sk/wp-json/wp/v2/material?per_page=100&_embed&filter[orderby]=id&order=asc');

@@ -61,6 +61,40 @@
         </div>
       </div>
     </div>
+    <button
+      v-if="!showErrorText"
+      class="button button--error"
+      v-html="$t('raiseError')"
+      @click="toggleErrorArea()"
+    />
+    <button
+      v-else
+      class="button button--error"
+      v-html="$t('hideError')"
+      @click="toggleErrorArea()"
+    />
+    <div
+      v-if="showErrorText && sendingResult === null"
+    >
+      <textarea
+        class="error_area"
+        v-model="error"
+      />
+      <button
+        class="button button--send"
+        :disabled="sendingError"
+        v-html="$t('sendError')"
+        @click="sendError()"
+    />
+    </div>
+    <div
+      v-if="sendingResult === 1"
+      v-html="$t('errorSentSuccesfully')"
+    />
+    <div
+      v-if="sendingResult === 0"
+      v-html="$t('errorNotSentSuccesfully')"
+    />
   </div>
 </template>
 
@@ -69,6 +103,27 @@ export default {
   props: {
     trashDetails: {
       type: Object,
+    },
+  },
+  data() {
+    return {
+      error: '',
+      sendingError: false,
+      sendingResult: null,
+      showErrorText: false,
+    };
+  },
+  methods: {
+    async sendError() {
+      this.sendingError = true;
+      this.sendingResult = await this.$store.dispatch('addTrashError', {
+        code: this.trashDetails[0].title.rendered,
+        content: this.error,
+      });
+      this.sendingError = false;
+    },
+    toggleErrorArea() {
+      this.showErrorText = !this.showErrorText;
     },
   },
 };
@@ -113,6 +168,8 @@ export default {
 }
 
 .trash {
+  text-align: center;
+
   &__name {
     font-size: 1.5rem;
     margin-bottom: 20px;
@@ -122,5 +179,13 @@ export default {
   &__part {
     margin-bottom: 10px;
   }
+}
+
+.error_area {
+  display: block;
+  height: 100px;
+  margin: 0 auto;
+  max-width: 320px;
+  width: 100%;
 }
 </style>
