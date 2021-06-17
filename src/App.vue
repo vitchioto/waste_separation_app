@@ -139,9 +139,19 @@ export default {
       localStorage.setItem('cookie-consent', true);
       this.cookieConsent = true;
     },
+    trackInstallation() {
+      window.addEventListener('appinstalled', () => {
+        console.log('installed');
+        this.$gtag.event('pwa', {
+        event_category: 'pwa',
+        event_label: 'installation',
+      });
+      });
+    },
   },
   created() {
     this.cookieConsent = localStorage.getItem('cookie-consent') || false;
+    this.trackInstallation();
   },
 };
 </script>
